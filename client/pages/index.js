@@ -1,4 +1,9 @@
+
 function Index() {
- return <h1>Home</h1> 
-};
+ 
+  
+  return (
+    <></>
+  );
+}
 export default Index;
