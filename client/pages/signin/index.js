@@ -1,19 +1,44 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../../components/Button";
 import CheckBox from "../../components/CheckBox";
 import InputBox from "../../components/InputBox";
+import { useRouter } from "next/router";
 const index = () => {
   const [isTrue, setIsTrue] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleSignIn = () => {
+  const [note, setNote] = useState("");
+  const [noteShow, setNoteShow] = useState(false);
+  const router = useRouter();
+  const handleSignIn = async () => {
     if (
       email !== "" &&
       password !== "" &&
       email !== null &&
       password !== null
     ) {
-      setIsTrue(false);
+      try {
+        const res = await fetch("http://localhost:3000/auth", {
+          method: "post",
+          mode: "cors",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        setNote(data?.note);
+        setNoteShow(true);
+        console.log(data);
+        if (data?.accessToken) {
+          router.push("/dashboard");
+        }else{
+          router.push("/signin")
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
       // make the request if not empty
     } else {
       // form not filled correctly
@@ -25,7 +50,7 @@ const index = () => {
   };
   return (
     <>
-      <div className="m-0 flex justify-center items-center h-screen ">
+      <div className="m-0 flex flex-col justify-center items-center h-screen">
         <div className=" p-5 flex  flex-col sm:w-1/2 lg:w-1/4  ">
           <div className=" mb-6">
             <h1 className=" text-darkPurple text-3xl font-bold text-center">
@@ -69,6 +94,17 @@ const index = () => {
             </a>
           </div>
         </div>
+        {noteShow ? (
+          <div className="flex absolute bottom-0 md:transition ease-in-out z-10 flex-row justify-end w-full p-5">
+            <div className="px-1 py-6 w-3/12 opacity-70 bg-gray-200 border border-lightPurple ">
+              <p className="text-darkPurple text-center capitalize font-medium">
+                {note}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

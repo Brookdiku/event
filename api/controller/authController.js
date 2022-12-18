@@ -1,0 +1,58 @@
+const path = require("path");
+const fsPromise = require("fs/promises");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+// fetch the data of users
+const userDB = {
+  users: require("../database/users.json"),
+  setUsers: function (data) {
+    this.users = data;
+  },
+};
+
+// login function
+const handleLogin = async (req, res) => {
+  const { email, password } = req?.body;
+  if (!email || !password)
+    res.status(400).json({ note: "empty form are not acceptable!" });
+  const foundUser = userDB.users.find((x) => x.email === email);
+  if (!foundUser) res.status(400).json({ note: "Oops! user does not exist" });
+  //check if the password correct
+  else {
+    const verifyPassword = await bcrypt.compare(password, foundUser.password);
+    if (verifyPassword) {
+      const accessToken = jwt.sign(
+        { username: foundUser.username },
+        process.env.ACCESS_TOKEN,
+        { expiresIn: "5min" }
+      );
+      const refreshToken = jwt.sign(
+        { username: foundUser.username },
+        process.env.REFRESH_TOKEN,
+        { expiresIn: "1d" }
+      );
+      const otherUsers = userDB.users.filter(
+        (person) => person.username !== foundUser.username
+      );
+      const currentUser = { ...foundUser, refreshToken };
+      userDB.setUsers([...otherUsers, currentUser]);
+      await fsPromise.writeFile(
+        path.join(__dirname, "../", "database", "users.json"),
+        JSON.stringify(userDB.users)
+      );
+      res.cookie("event_jwt", refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      res.status(200).json({
+        note: "successfully signed in.",
+        accessToken: accessToken,
+      });
+    } else {
+      res.status(400).json({ note: "email or password incorrect!" });
+    }
+  }
+};
+
+module.exports = { handleLogin };

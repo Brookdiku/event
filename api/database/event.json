@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "title": "world cup finale match fest",
+        "category":2,
+        "description": "become the part of our fest and enjoy the program and the match together for unforgattable moments.",
+        "event_date": "23/02/2022",
+        "location": {
+            "latitude": "9.223455",
+            "longitude": "9.55677"
+        },
+        "event_organizer": 2,
+        "posted_date":"20/02/2022",
+        "price": "250birr",
+        "images": {
+            "image1": "image1.png",
+            "image2": "image2.png",
+            "image3": "image3.png"
+        },
+        "rating": "2.5"
+    },
+    {
+        "id": 2,
+        "category":3,
+        "title": "world cup finale match fest",
+        "description": "become the part of our fest and enjoy the program and the match together for unforgattable moments.",
+        "event_date": "23/02/2022",
+        "location": {
+            "latitude": "9.223455",
+            "longitude": "9.55677"
+        },
+        "event_organizer": 2,
+        "posted_date":"20/02/2022",
+        "price": "250birr",
+        "images": {
+            "image1": "image1.png",
+            "image2": "image2.png",
+            "image3": "image3.png"
+        },
+        "rating": "2.5"
+    }
+]
