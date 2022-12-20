@@ -39,11 +39,17 @@ const handleRegister = async (req, res) => {
 
   //encrypt the password
   try {
+    const id = userDB.users.length == 0 ? 1 : userDB.users.length + 1;
     const newUser = {
+      id: id,
       username: username,
       //encrypt the password with bcrypt here
-      password: await bcrypt.hash(password,10),
+      password: await bcrypt.hash(password, 10),
       email: email,
+      roles: {
+        user: "339097",
+      },
+      refreshToken: "",
     };
     userDB.setUsers([...userDB.users, newUser]);
     await fsPromise.writeFile(

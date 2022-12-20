@@ -1,3 +1,5 @@
+const verifyRoles=require("../middlewares/verifyRoles");
+const ROLES= require("../config/rolesList");
 const express = require("express");
 const {
   getEvents,
@@ -7,9 +9,9 @@ const {
   deleteEvent,
 } = require("../controller/eventController");
 const router = express.Router();
-router.get("/", getEvents);
-router.get("/:id", getEvent);
-router.post("/create", createEvent);
-router.put("/edit:id", editEvent);
-router.delete("/delete:id", deleteEvent);
+router.get("/",verifyRoles(ROLES.admin), getEvents);
+router.get("/:id",verifyRoles(ROLES.user), getEvent);
+router.post("/create",verifyRoles(ROLES.user,ROLES.admin), createEvent);
+router.put("/edit:id",verifyRoles(ROLES.user,ROLES.admin), editEvent);
+router.delete("/delete:id",verifyRoles(ROLES.user,ROLES.admin), deleteEvent);
 module.exports = router;

@@ -22,13 +22,24 @@ const handleLogin = async (req, res) => {
   else {
     const verifyPassword = await bcrypt.compare(password, foundUser.password);
     if (verifyPassword) {
+      const roles = Object.values(foundUser.roles);
       const accessToken = jwt.sign(
-        { username: foundUser.username },
+        {
+          userInfo: {
+            username: foundUser.username,
+            roles: roles
+          },
+        },
         process.env.ACCESS_TOKEN,
         { expiresIn: "5min" }
       );
       const refreshToken = jwt.sign(
-        { username: foundUser.username },
+        {
+          userInfo: {
+            username: foundUser.username,
+            roles: roles
+          },
+        },
         process.env.REFRESH_TOKEN,
         { expiresIn: "1d" }
       );
