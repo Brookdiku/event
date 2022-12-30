@@ -1,0 +1,14 @@
+
+// import { NextRequest, NextResponse } from "next/server";
+
+
+// const middleware = async (req: NextRequest) => {
+//   if (req.url.includes('/dashboard')) {
+//     const { cookies } = req
+//     const jwt = cookies.get("event_jwt")?.value;
+//     console.log(jwt);
+//   }
+// };
+
+// export default middleware;
+

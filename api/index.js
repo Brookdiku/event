@@ -3,7 +3,7 @@ const express = require("express");
 const verifyJWT = require("./middlewares/verifyJWT");
 const Cors = require('cors')
 const app = express();
-const whitelist = ["http://localhost:3001"];
+const whitelist = ["http://localhost:3000"];
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
@@ -19,8 +19,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
+app.use(Cors(corsOptions));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 // index route
+
 app.get('/',(req,res)=>{
   res.json({message:"working to improve the service"})
 })
@@ -42,6 +46,6 @@ app.use("/events", require("./routes/eventRoute"));
 //   res.json({ message: "route not found!" });
 // });
 // server initiation 
-app.listen("3000", () => {
-  console.log("Hello. server started on port 3000!");
+app.listen("3500", () => {
+  console.log("Hello. server started on port 3500!");
 });

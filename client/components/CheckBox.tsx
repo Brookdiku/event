@@ -1,7 +1,7 @@
 const CheckBox = () => {
   return (
     
-    <div className=" flex justify-end mb-3">
+    <div className=" flex justify-end mb-3 ">
     <p className="font-normal">
       Remember{" "}
       <span>

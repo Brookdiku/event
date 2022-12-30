@@ -21,11 +21,12 @@ const handleRefreshToken = async (req, res) => {
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err, decoded) => {
     if (err || foundUser.username !== decoded.username)
       return res.status(403).json({ message: "forbidden" });
-    const accessToken = jwt.sign(
-      { username: foundUser.username },
-      process.env.ACCESS_TOKEN,
-      { expiresIn: "5min" }
-    );
+    // const accessToken = jwt.sign(
+    //   { username: foundUser.username },
+    //   process.env.ACCESS_TOKEN,
+    //   { expiresIn: "5min" }
+    // );
+    res.statusCode(200);
     res.status(200).json({
       message: {
         message: "updated.",
